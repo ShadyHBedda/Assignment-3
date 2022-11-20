@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 int *array;
 int length = 1000;
@@ -23,10 +24,10 @@ int count1s ()
 
 int main(void)
 {
-
+    srand(time(0));
     int randArray[length],i;
     for(i=0;i<length;i++)
-        randArray[i]=rand()%6;   //Generate number between 0 to 99
+        randArray[i]=rand()%6;   //Generate number between 0 and 5
     printf("\nElements of the array::");
     for(i=0;i<length;i++)
     {
