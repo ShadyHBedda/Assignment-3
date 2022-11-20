@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <omp.h>
+#include "count_race.c"
 
 
 int length = 100;
@@ -23,36 +24,6 @@ int count1s (int *arrayInput)
     return count;
 }
 
-
-int race_count(int *arrayInput, int numberOfThreads) {
-    int T[numberOfThreads];
-    for (int i = 0; i < numberOfThreads; i++) {
-        T[i] = 0;
-    }
-    omp_set_num_threads(numberOfThreads);
-    int parallel_count = 0;
-    #pragma omp parallel
-    {
-        int i;
-        #pragma omp for
-        for (i=0; i<length; i++)
-        {
-            if (arrayInput[i] == 1)
-            {
-                parallel_count++;
-                T[omp_get_thread_num()]++;
-            }
-        }
-    }
-
-    for (int i = 0; i < numberOfThreads; i++) {
-        printf("\nNumber of 1's found by Thread %d is %d", i, T[i]);
-    }
-    return parallel_count;
-};
-
-
-
 int main(void)
 {
     srand(time(0));
@@ -69,7 +40,7 @@ int main(void)
 
     int *array = &randArray;
     printf("\nNumber of 1's is %d", count1s(array));
-    printf("\nNumber of 1's found by race_count is %d", race_count(array, 10));
+    printf("\nNumber of 1's found by race_count is %d", race_count(array, length, 10));
 
 }
 
